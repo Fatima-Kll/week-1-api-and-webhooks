@@ -1,0 +1,153 @@
+{
+  "name": "Data Receiver",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "36ac1fef-9062-4eb3-913f-0491442dd6a7",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "33e32cf3-7b7c-42ef-9e52-111caec5d1cc",
+      "name": "Webhook",
+      "webhookId": "36ac1fef-9062-4eb3-913f-0491442dd6a7"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Webhook received successfully\",\n  \"data\": {\n    \"name\": \"={{ $json.body.name }}\",\n    \"email\": \"={{ $json.body.email }}\",\n    \"service\": \"={{ $json.body.service }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        460,
+        -160
+      ],
+      "id": "1bac7cfe-0267-42c2-8ba1-f86ead1c6665",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7876014e-5347-41dd-8f7f-918acecc8e4b",
+              "leftValue": "={{ $json.body.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "4ba8738f-4c65-4281-9567-d4a918df5dbc",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "55ba5e35-47b5-4aad-ae89-7f91be1b84c8",
+              "leftValue": "={{ $json.body.service }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "3c5929ae-3f45-402b-8bde-93841fdc7bde",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Stop the workflow"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        440,
+        100
+      ],
+      "id": "18e0eae5-c361-4c38-a0b6-4622b907f286",
+      "name": "Stop and Error"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8e14358f-fa8c-43d7-912a-74424e1e7fa1",
+  "meta": {
+    "instanceId": "29b9a9a680733e5ce0b9e93098f57ce4422cdcbfe0a994a36380bf8db7bfc314"
+  },
+  "id": "Sc8NPDmCc3YOPNRz",
+  "tags": [
+    {
+      "createdAt": "2026-10-26T09:14:34.892Z",
+      "updatedAt": "2026-10-26T09:14:34.892Z",
+      "id": "nftUvncbAEskMYGH",
+      "name": "n8n01"
+    }
+  ]
+}
